@@ -1,0 +1,64 @@
+{% extends '::base.html.twig' %}
+
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li><a href="{{ path('default_index') }}">Inicio</a></li>
+  <li><a href="{{ path('indicador_index') }}">Indicador</a></li>
+  <li class="active">Ver</li>
+</ol>
+{% endblock %}
+
+{% block body -%}
+    <h3>Ver Indicador</h3>
+
+    <table class="records_properties table table-striped">
+        <tbody>
+            <tr>
+                <th>Area</th>
+                <td>{{ entity.area }}</td>
+            </tr>
+            <tr>
+                <th>Granularidad</th>
+                <td>{{ entity.granularidad }}</td>
+            </tr>
+            <tr>
+                <th>Dia</th>
+                <td>{{ entity.dia }}</td>
+            </tr>
+            <tr>
+                <th>Mes</th>
+                <td>{{ entity.mes }}</td>
+            </tr>
+            <tr>
+                <th>Anno</th>
+                <td>{{ entity.anno }}</td>
+            </tr>
+            <tr>
+                <th>Valor</th>
+                <td>{{ entity.valor }}</td>
+            </tr>
+            <tr>
+                <th>Indicador</th>
+                <td>{{ entity.indicador }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <p class="text-left">
+
+                  
+</p>
+
+
+    <p class="text-left">
+    <a href="{{ path('indicador_index') }}">
+      <button type="button" class="btn btn-default btn-xs">
+        <span class="glyphicon glyphicon-th-list"></span> Volver
+      </button>
+    </a>
+    </p>{% endblock %}

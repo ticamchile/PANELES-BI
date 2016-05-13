@@ -1,0 +1,30 @@
+{% extends '::base.html.twig' %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li class="active">Usted está en: Inicio</li>
+</ol>
+{% endblock %}
+
+{% block body %}
+<h1>Listado de paneles</h1>
+<p>A continuación se listan los paneles a los cuales usted tiene acceso, seleccione el mes y el año y luego el panel que desea consultar y presione "Ver".</p>
+<br/>
+
+<div class="container" style="width: 90%;">
+    {{ form(periodo_form) }}
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+  
+  //Borro los paneles
+  $('#bctic_cam_panelesbibundle_periodo_panel').find('option').remove();
+
+  {% for panel in paneles %}
+    $('#bctic_cam_panelesbibundle_periodo_panel').find('option').end().append('<option value="{{ panel.id }}">{{ panel.nombre }}</option>').val('{{ panel.id }}');
+  {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,194 @@
+{% extends '::base_panel.html.twig' %}
+
+{% block panel %}
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="chart-wrapper">
+      <div class="chart-title">
+        <h5 class="cabecera">1) RESULTADOS DE SERVICIOS en M$</h5>
+      </div>
+      <div class="chart-stage">
+        <div id="panel_2_1"></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            <h5 class="cabecera">2) COSTOS POR PROCESOS EN M$ (Cam)</h5>
+          </div>  
+          <div class="chart-stage">
+            <div id="panel_2_2"></div>
+          </div>
+        </div>    
+      </div>
+      <div class="col-md-6">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            <h5 class="cabecera">3) FLUJO DE CAJA EN M$</h5>
+          </div>  
+          <div class="chart-stage">
+            <div id="panel_2_3"></div>
+          </div>
+        </div>    
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            <h5 class="cabecera">4) COSTOS LOGÍSTICOS M$ / M3</h5>
+          </div>  
+          <div class="chart-stage">
+            <div id="panel_2_2"></div>
+            <div id="panel_2_3"></div>
+          </div>
+        </div>    
+      </div>
+      <div class="col-md-6">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            <h5 class="cabecera">5) FLUJO DE CAJA CAM (Cliente Enersis) EN M$</h5>
+          </div>  
+          <div class="chart-stage">
+            <div id="panel_2_3"></div>
+          </div>
+        </div>    
+      </div>
+    </div>    
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            <h5 class="cabecera">6) EVOLUCIÓN BODEGA ANÁLISIS CAM</h5>
+          </div>  
+          <div class="chart-stage">
+            <div id="panel_2_2"></div>
+            <div id="panel_2_3"></div>
+          </div>
+        </div>    
+      </div>
+      <div class="col-md-6">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            <h5 class="cabecera">7) EVOLUCION BODEGA ANÁLISIS ENERSIS</h5>
+          </div>  
+          <div class="chart-stage">
+            <div id="panel_2_3"></div>
+          </div>
+        </div>    
+      </div>
+    </div>  
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            <h5 class="cabecera">8) EVOLUCIÓN BODEGA ANÁLISIS CHILECTRA</h5>
+          </div>  
+          <div class="chart-stage">
+            <div id="panel_2_2"></div>
+          </div>
+        </div>    
+      </div>
+    </div>  
+
+  </div>
+
+  <div class="col-md-6">
+    <div class="chart-wrapper">
+      <div class="chart-title">
+        <h5 class="cabecera">9) INDICADORES DE SERVICIO</h5>
+      </div>
+      <div class="chart-stage">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+              Líneas despachadas antes de 48 hrs. % cumplimiento
+              </div>
+              <div class="chart-stage">
+                <div id="panel_1_4"></div>
+              </div>
+            </div>    
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+              Recepciones disponibles antes de 48 hrs. % cumplimiento
+              </div>
+              <div class="chart-stage">
+                <div id="panel_1_4"></div>
+              </div>
+            </div>    
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+              Nivel de líneas encontradas en preparación
+              </div>
+              <div class="chart-stage">
+                <div id="panel_1_4"></div>
+              </div>
+            </div>    
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+              PDMs atendidos completos % cumplimientos bodega San Martín.
+              </div>
+              <div class="chart-stage">
+                <div id="panel_1_4"></div>
+              </div>
+            </div>    
+          </div>
+        </div>  
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+              PDMs atendidos completos % cumplimientos bodega Carlos Silva.
+              </div>
+              <div class="chart-stage">
+                <div id="panel_1_4"></div>
+              </div>
+            </div>    
+          </div>
+        </div>                
+
+      </div>
+    </div>
+  </div>    
+</div>
+{% endblock %}
+
+
+{% block js %}
+  {{ parent() }}
+  $(function () { 
+
+   //PANEL 1 1:
+   $.ajax({
+        url: "{{ path('panel_data_2_1', { 'mes': mes, 'anno': anno } ) }}",
+        data: { } ,
+        type:'get',
+        success: function(data){
+          $('#panel_2_1').html(data);
+        }
+    });         
+
+  });
+{% endblock %}  

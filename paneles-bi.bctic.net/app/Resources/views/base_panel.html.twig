@@ -1,0 +1,29 @@
+{% extends '::base.html.twig' %}
+
+{% block javascript %}
+  {{ parent() }}
+  <script src="http://code.highcharts.com/highcharts.js"></script>
+{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/panel.css') }}" type="text/css" media="print, screen">
+  <link rel="stylesheet" href="{{ asset('css/keen-dashboards.css') }}" type="text/css" media="print, screen">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-1"><img alt="logo" style="height:35px; margin-top:7px; margin-right: 13px;" src="{{ asset('images/logo.jpg') }}"/></div>
+    <div class="col-md-5"><h5>{{ panel.nombre }}<br/>Mes {{ mes }} de {{ anno }}</h5></div>
+    <div class="col-md-5"><h5>Responsable: {{ panel.responsable }}</h5></div>
+  </div>
+</div>
+<br/>
+
+{% block panel %}
+
+{% endblock %}
+
+{% endblock %}

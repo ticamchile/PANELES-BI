@@ -1,0 +1,7 @@
+bc_tic_cam_paneles_bi:
+    resource: "@BcTicCamPanelesBiBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+bc_tic_victoria:
+             resource: "@BcTicVictoriaBundle/Resources/config/routing.yml" 

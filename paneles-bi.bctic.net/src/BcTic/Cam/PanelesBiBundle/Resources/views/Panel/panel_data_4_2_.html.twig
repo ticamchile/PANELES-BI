@@ -1,0 +1,96 @@
+{% set suma_permanente = 0 %}
+{% set suma_no_permanente = 0 %}
+
+{% set suma_acumulado_permanente = 0 %}
+{% set suma_acumulado_no_permanente = 0 %}
+
+{% set suma_permanente_proyeccion = 0 %}
+{% set suma_no_permanente_proyeccion = 0 %}
+{% set suma_total_proyeccion = 0 %}
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th rowspan="2"></th>
+      <th colspan="3" class="color">MES (MM$)</th>
+      <th class="separador"></th>
+      <th colspan="3" class="color">ACUM. AL {{ mes | e }}-{{ anno }} (MM$)</th>
+      <th class="separador"></th>
+      <th colspan="3" class="color">PROYECTADO AL 12-{{ anno }} (MM$)</th>
+    </tr>
+    <tr>
+
+      <th class="color">Permanente</th>
+      <th class="color">No permanente</th>
+      <th class="color">Total</th>
+
+      <th class="separador"></th>
+
+      <th class="color">Permanente</th>
+      <th class="color">No permanente</th>
+      <th class="color">Total</th>
+
+      <th class="separador"></th> 
+
+      <th class="color">Permanente</th>
+      <th class="color">No permanente</th>
+      <th class="color">Total</th>     
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for key,item in data %}
+
+      {% set suma_permanente = suma_permanente + item.permanente %}
+      {% set suma_no_permanente = suma_no_permanente + item.no_permanente %}
+      
+      {% set suma_acumulado_permanente = suma_acumulado_permanente + item.permanente_acumulado %}
+      {% set suma_acumulado_no_permanente = suma_no_permanente + item.no_permanente_acumulado %}
+
+      {% set suma_permanente_proyeccion = suma_permanente_proyeccion + item.permanente_proyeccion %}
+      {% set suma_no_permanente_proyeccion = suma_no_permanente_proyeccion + item.no_permanente_proyeccion %}
+
+
+    <tr>
+
+      <td>{{ key }}</td>
+      <td>{{ (item.permanente / 1000000 ) | number_format(2,',','.') }}</td>
+      <td>{{ (item.no_permanente / 1000000 ) | number_format(2,',','.') }}</td>
+      <td>{{ (item.total / 1000000 ) | number_format(2,',','.') }}</td>
+
+      <th class="separador"></th>
+
+      <td>{{ (item.permanente_acumulado / 1000000 ) | number_format(2,',','.') }}</td>
+      <td>{{ (item.no_permanente_acumulado / 1000000 ) | number_format(2,',','.') }}</td>
+      <td>{{ (item.total_acumulado / 1000000 ) | number_format(2,',','.') }}</td>
+
+      <th class="separador"></th>
+
+      <td>{{ (item.permanente_proyeccion / 1000000 ) | number_format(2,',','.') }}</td>
+      <td>{{ (item.no_permanente_proyeccion / 1000000 ) | number_format(2,',','.') }}</td>
+      <td>{{ ( (item.permanente_proyeccion + item.no_permanente_proyeccion) / 1000000 ) | number_format(2,',','.') }}</td>
+
+      {% set suma_total_proyeccion = suma_total_proyeccion + (item.permanente_proyeccion + item.no_permanente_proyeccion) %}
+
+    </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+      {% set suma_mes = suma_permanente + suma_no_permanente %}
+      {% set suma_acumulado = suma_acumulado_permanente + suma_acumulado_no_permanente %}
+      <tr>
+        <th class="color">Total</th>
+        <td>{{ ( suma_permanente / 1000000 ) | number_format(2,',','.')}}</td>
+        <td>{{ ( suma_no_permanente / 1000000 ) | number_format(2,',','.')}}</td>
+        <td>{{ ( suma_mes / 1000000 ) | number_format(2,',','.')}}</td>
+        <th class="separador"></th>
+        <td>{{ ( suma_acumulado_permanente / 1000000 ) | number_format(2,',','.')}}</td>
+        <td>{{ ( suma_acumulado_no_permanente / 1000000 ) | number_format(2,',','.')}}</td>
+        <td>{{ ( suma_acumulado / 1000000 ) | number_format(2,',','.')}}</td>
+        <th class="separador"></th>
+        <td>{{ ( suma_permanente_proyeccion  / 1000000 ) | number_format(2,',','.')}}</td>
+        <td>{{ ( suma_no_permanente_proyeccion / 1000000 ) | number_format(2,',','.')}}</td>
+        <td>{{ ( suma_total_proyeccion / 1000000 ) | number_format(2,',','.')}}</td>
+      </tr>  
+    </tfoot>
+</table>

@@ -1,0 +1,821 @@
+{% extends '::base_panel.html.twig' %}
+
+{% block panel %}
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="chart-wrapper">
+      <div class="chart-title">
+        <h5 class="cabecera">1) RESULTADOS DE SERVICIOS en M$</h5>
+      </div>
+      <div class="chart-stage">
+        <div id="panel_1_1"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            <h5 class="cabecera">1) GRÁFICA COSTOS MM$</h5>
+          </div>  
+          <div class="chart-stage">
+            <div id="panel_1_2"></div>
+          </div>
+        </div>    
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            <h5 class="cabecera">2) GRÁFICA COSTOS ACUMULADOS  en MM$</h5>
+          </div>  
+          <div class="chart-stage">
+            <div id="panel_1_3"></div>
+          </div>  
+        </div>  
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="chart-wrapper">
+      <div class="chart-title">
+        <h5 class="cabecera">2) INDICADORES DE SERVICIO</h5>
+      </div>
+      <div class="chart-stage">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+              % Cumplimiento solicitudes TI en plazo
+              </div>
+              <div class="chart-stage">
+                <div id="panel_1_4"></div>
+              </div>
+            </div>    
+          </div>
+          <div class="col-md-6">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+                Tickets de mesa de ayuda
+              </div>  
+              <div class="chart-stage">
+                <div id="panel_1_5"></div>
+              </div>
+            </div>  
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+                Uptime ORACLE
+              </div>
+              <div class="chart-stage">
+                <div id="panel_1_6"></div>
+              </div>
+            </div>    
+          </div>
+          <div class="col-md-6">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+                Uptime CORREO
+              </div>
+              <div class="chart-stage">
+                <div id="panel_1_7"></div>
+              </div>
+            </div>    
+          </div>
+        </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="chart-wrapper">
+            <div class="chart-title">
+            Uptime INTERNET
+            </div>
+            <div class="chart-stage">  
+              <div id="panel_1_8"></div>
+            </div>  
+          </div>
+        </div>  
+        <div class="col-md-6">
+          <div class="chart-wrapper">
+            <div class="chart-title">
+            Uptime REDES
+            </div>
+            <div class="chart-stage">
+              <div id="panel_1_9"></div>
+            </div>
+          </div>    
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="chart-wrapper">
+            <div class="chart-title">
+            Uptime SAMAC
+            </div>
+            <div class="chart-stage">
+              <div id="panel_1_10"></div>
+            </div>
+          </div>    
+        </div>  
+        <div class="col-md-6">
+          <div class="chart-wrapper">
+            <div class="chart-title">
+            Uptime GENERAL
+            </div>
+            <div class="chart-stage">
+              <div id="panel_1_11"></div>
+            </div>
+          </div>    
+        </div>
+      </div>        
+    </div>
+  </div>    
+</div>
+{% endblock %}
+
+
+{% block js %}
+  {{ parent() }}
+  $(function () { 
+
+   //PANEL 1 1:
+   $.ajax({
+        url: "{{ path('panel_data_1_1', { 'mes': mes, 'anno': anno } ) }}",
+        data: { } ,
+        type:'get',
+        success: function(data){
+          $('#panel_1_1').html(data);
+        }
+    });
+
+    //PANEL 1 2:
+    $.ajax({
+        url: "{{ path('panel_data_1_2', { 'mes': mes, 'anno': anno } ) }}",
+        data: { } ,
+        type:'get',
+        dataType: "json",
+        success: function(data){
+
+            var options = {
+              chart: {
+                renderTo: 'panel_1_2',
+                type: 'column'
+              },
+              title: {
+                text: ''
+              },
+              tooltip: {
+                shared: true,
+              },
+              xAxis: {
+                title: {
+                  text: ''
+                },
+                categories: []
+              },
+              yAxis: {
+                title: {
+                  text: ''
+                }
+              },
+              series: [],
+              credits: { enabled: false }
+            };
+
+            options.xAxis.categories = data.categories;
+            options.yAxis.title.text = data.yAxisTitle;
+            options.xAxis.title.text = data.xAxisTitle;
+
+            $.each(data.series, function(i,serie) {
+              var data_serie = {
+                name: serie.name,
+                color: serie.color,
+                data: serie.data,
+              }
+              options.series.push(data_serie);
+            });
+
+            var chart = new Highcharts.Chart(options);
+
+        }
+    });
+
+    //PANEL 1 3:
+    $.ajax({
+        url: "{{ path('panel_data_1_3', { 'mes': mes, 'anno': anno } ) }}",
+        data: { } ,
+        type:'get',
+        dataType: "json",
+        success: function(data){
+
+            var options = {
+              chart: {
+                renderTo: 'panel_1_3',
+                height: 800,
+                zoomType: 'xy',
+                type: 'line'
+              },
+              tooltip: {
+                shared: true,
+              },
+              title: {
+                text: ''
+              },
+              xAxis: {
+                title: {
+                  text: ''
+                },
+                categories: []
+              },
+              yAxis: {
+                title: {
+                  text: ''
+                }
+              },
+              series: [],
+              credits: { enabled: false }
+            };
+
+            options.xAxis.categories = data.categories;
+            options.yAxis.title.text = data.yAxisTitle;
+            options.xAxis.title.text = data.xAxisTitle;
+
+            $.each(data.series, function(i,serie) {
+              var data_serie = {
+                name: serie.name,
+                color: serie.color,
+                data: serie.data,
+              }
+              options.series.push(data_serie);
+            });
+
+            var chart = new Highcharts.Chart(options);
+
+        }
+    });
+
+    //PANEL 1 4:
+    $.ajax({
+        url: "{{ path('panel_data_1_4', { 'mes': mes, 'anno': anno } ) }}",
+        data: { } ,
+        type:'get',
+        dataType: "json",
+        success: function(data){
+
+            var options = {
+              chart: {
+                renderTo: 'panel_1_4',
+                type: 'xy',
+                zoomType: 'xy',
+                alignTicks: false
+              },
+              tooltip: {
+                shared: true,
+              },
+              title: {
+                text: ''
+              },
+              xAxis: {
+                title: {
+                  text: ''
+                },
+                categories: []
+              },
+              yAxis: [{
+                title: {
+                  text: ''
+                },
+                labels: {
+                  format: '{value}%'
+                },
+                max: 100,
+                min: data.minY
+                },{
+                title: {
+                  text: 'Cantidad'
+                },
+                opposite: true,
+                min:0,
+                max: data.maxOppositeY
+              }],
+              series: [],
+              credits: { enabled: false }
+            };
+
+            options.xAxis.categories = data.categories;
+            options.xAxis.title.text = data.xAxisTitle;
+
+            $.each(data.series, function(i,serie) {
+              var data_serie = {
+                name: serie.name,
+                color: serie.color,
+                data: serie.data,
+                type: serie.type,
+                yAxis: serie.yAxis,
+                tooltip: {
+                  valueSuffix: serie.valueSuffix
+                }
+              }
+              options.series.push(data_serie);
+            });
+
+            var chart = new Highcharts.Chart(options);
+
+        }
+    });  
+
+    //PANEL 1 5:
+    $.ajax({
+        url: "{{ path('panel_data_1_5', { 'mes': mes, 'anno': anno } ) }}",
+        data: { } ,
+        type:'get',
+        dataType: "json",
+        success: function(data){
+
+            var options = {
+              chart: {
+                renderTo: 'panel_1_5',
+                type: 'xy',
+                zoomType: 'xy',
+                alignTicks: false
+              },
+              tooltip: {
+                shared: true,
+              },
+              title: {
+                text: ''
+              },
+              xAxis: {
+                title: {
+                  text: ''
+                },
+                categories: []
+              },
+              yAxis: [{
+                title: {
+                  text: ''
+                },
+                labels: {
+                  format: '{value} hrs.'
+                },
+                min: 0
+                },{
+                title: {
+                  text: 'Cantidad'
+                },
+                opposite: true,
+                min:0,
+                max: data.maxOppositeY
+              }],
+              series: [],
+              credits: { enabled: false }
+            };
+
+            options.xAxis.categories = data.categories;
+            options.xAxis.title.text = data.xAxisTitle;
+
+            $.each(data.series, function(i,serie) {
+              var data_serie = {
+                name: serie.name,
+                color: serie.color,
+                data: serie.data,
+                type: serie.type,
+                yAxis: serie.yAxis,
+                tooltip: {
+                  valueSuffix: serie.valueSuffix
+                }
+              }
+              options.series.push(data_serie);
+            });
+
+            var chart = new Highcharts.Chart(options);
+
+        }
+    });      
+    
+    //PANEL 1 6:
+    $.ajax({
+        url: "{{ path('panel_data_1_6', { 'mes': mes, 'anno': anno } ) }}",
+        data: { } ,
+        type:'get',
+        dataType: "json",
+        success: function(data){
+
+            var options = {
+              chart: {
+                renderTo: 'panel_1_6',
+                type: 'xy',
+                zoomType: 'xy',
+                alignTicks: false
+              },
+              tooltip: {
+                shared: true,
+              },
+              title: {
+                text: ''
+              },
+              xAxis: {
+                title: {
+                  text: ''
+                },
+                categories: []
+              },
+              yAxis: [{
+                title: {
+                  text: ''
+                },
+                labels: {
+                  format: '{value}%'
+                },
+                max: 100,
+                min: 95
+                },{
+                title: {
+                  text: 'Incidencias'
+                },
+                opposite: true,
+                min:0,
+                max: data.maxOppositeY
+              }],
+              series: [],
+              credits: { enabled: false }
+            };
+
+            options.xAxis.categories = data.categories;
+            options.xAxis.title.text = data.xAxisTitle;
+
+            $.each(data.series, function(i,serie) {
+              var data_serie = {
+                name: serie.name,
+                color: serie.color,
+                data: serie.data,
+                type: serie.type,
+                yAxis: serie.yAxis,
+                tooltip: {
+                  valueSuffix: serie.valueSuffix
+                }
+              }
+              options.series.push(data_serie);
+            });
+
+            var chart = new Highcharts.Chart(options);
+
+        }
+    }); 
+
+    //PANEL 1 7:
+    $.ajax({
+        url: "{{ path('panel_data_1_7', { 'mes': mes, 'anno': anno } ) }}",
+        data: { } ,
+        type:'get',
+        dataType: "json",
+        success: function(data){
+
+            var options = {
+              chart: {
+                renderTo: 'panel_1_7',
+                type: 'xy',
+                zoomType: 'xy',
+                alignTicks: false
+              },
+              tooltip: {
+                shared: true,
+              },
+              title: {
+                text: ''
+              },
+              xAxis: {
+                title: {
+                  text: ''
+                },
+                categories: []
+              },
+              yAxis: [{
+                title: {
+                  text: ''
+                },
+                labels: {
+                  format: '{value}%'
+                },
+                max: 100,
+                min: data.minY
+                },{
+                title: {
+                  text: 'Incidencias'
+                },
+                opposite: true,
+                min:0,
+                max: data.maxOppositeY
+              }],
+              series: [],
+              credits: { enabled: false }
+            };
+
+            options.xAxis.categories = data.categories;
+            options.xAxis.title.text = data.xAxisTitle;
+
+            $.each(data.series, function(i,serie) {
+              var data_serie = {
+                name: serie.name,
+                color: serie.color,
+                data: serie.data,
+                type: serie.type,
+                yAxis: serie.yAxis,
+                tooltip: {
+                  valueSuffix: serie.valueSuffix
+                }
+              }
+              options.series.push(data_serie);
+            });
+
+            var chart = new Highcharts.Chart(options);
+
+        }
+    });  
+
+    //PANEL 1 8:
+    $.ajax({
+        url: "{{ path('panel_data_1_8', { 'mes': mes, 'anno': anno } ) }}",
+        data: { } ,
+        type:'get',
+        dataType: "json",
+        success: function(data){
+
+            var options = {
+              chart: {
+                renderTo: 'panel_1_8',
+                type: 'xy',
+                zoomType: 'xy',
+                alignTicks: false
+              },
+              tooltip: {
+                shared: true,
+              },
+              title: {
+                text: ''
+              },
+              xAxis: {
+                title: {
+                  text: ''
+                },
+                categories: []
+              },
+              yAxis: [{
+                title: {
+                  text: ''
+                },
+                labels: {
+                  format: '{value}%'
+                },
+                max: 100,
+                min: 95
+                },{
+                title: {
+                  text: 'Incidencias'
+                },
+                opposite: true,
+                min:0,
+                max: data.maxOppositeY
+              }],
+              series: [],
+              credits: { enabled: false }
+            };
+
+            options.xAxis.categories = data.categories;
+            options.xAxis.title.text = data.xAxisTitle;
+
+            $.each(data.series, function(i,serie) {
+              var data_serie = {
+                name: serie.name,
+                color: serie.color,
+                data: serie.data,
+                type: serie.type,
+                yAxis: serie.yAxis,
+                tooltip: {
+                  valueSuffix: serie.valueSuffix
+                }
+              }
+              options.series.push(data_serie);
+            });
+
+            var chart = new Highcharts.Chart(options);
+
+        }
+    });  
+
+    //PANEL 1 9:
+    $.ajax({
+        url: "{{ path('panel_data_1_9', { 'mes': mes, 'anno': anno } ) }}",
+        data: { } ,
+        type:'get',
+        dataType: "json",
+        success: function(data){
+
+            var options = {
+              chart: {
+                renderTo: 'panel_1_9',
+                type: 'xy',
+                zoomType: 'xy',
+                alignTicks: false
+              },
+              tooltip: {
+                shared: true,
+              },
+              title: {
+                text: ''
+              },
+              xAxis: {
+                title: {
+                  text: ''
+                },
+                categories: []
+              },
+              yAxis: [{
+                title: {
+                  text: ''
+                },
+                labels: {
+                  format: '{value}%'
+                },
+                max: 100,
+                min: 95
+                },{
+                title: {
+                  text: 'Incidencias'
+                },
+                opposite: true,
+                min:0,
+                max: data.maxOppositeY
+              }],
+              series: [],
+              credits: { enabled: false }
+            };
+
+            options.xAxis.categories = data.categories;
+            options.xAxis.title.text = data.xAxisTitle;
+
+            $.each(data.series, function(i,serie) {
+              var data_serie = {
+                name: serie.name,
+                color: serie.color,
+                data: serie.data,
+                type: serie.type,
+                yAxis: serie.yAxis,
+                tooltip: {
+                  valueSuffix: serie.valueSuffix
+                }
+              }
+              options.series.push(data_serie);
+            });
+
+            var chart = new Highcharts.Chart(options);
+
+        }
+    });    
+
+    //PANEL 1 10:
+    $.ajax({
+        url: "{{ path('panel_data_1_10', { 'mes': mes, 'anno': anno } ) }}",
+        data: { } ,
+        type:'get',
+        dataType: "json",
+        success: function(data){
+
+            var options = {
+              chart: {
+                renderTo: 'panel_1_10',
+                type: 'xy',
+                zoomType: 'xy',
+                alignTicks: false
+              },
+              tooltip: {
+                shared: true,
+              },
+              title: {
+                text: ''
+              },
+              xAxis: {
+                title: {
+                  text: ''
+                },
+                categories: []
+              },
+              yAxis: [{
+                title: {
+                  text: ''
+                },
+                labels: {
+                  format: '{value}%'
+                },
+                max: 100,
+                min: 90
+                },{
+                title: {
+                  text: 'Incidencias'
+                },
+                opposite: true,
+                min:0,
+                max: data.maxOppositeY
+              }],
+              series: [],
+              credits: { enabled: false }
+            };
+
+            options.xAxis.categories = data.categories;
+            options.xAxis.title.text = data.xAxisTitle;
+
+            $.each(data.series, function(i,serie) {
+              var data_serie = {
+                name: serie.name,
+                color: serie.color,
+                data: serie.data,
+                type: serie.type,
+                yAxis: serie.yAxis,
+                tooltip: {
+                  valueSuffix: serie.valueSuffix
+                }
+              }
+              options.series.push(data_serie);
+            });
+
+            var chart = new Highcharts.Chart(options);
+
+        }
+    });
+
+    //PANEL 1 11:
+    $.ajax({
+        url: "{{ path('panel_data_1_11', { 'mes': mes, 'anno': anno } ) }}",
+        data: { } ,
+        type:'get',
+        dataType: "json",
+        success: function(data){
+
+            var options = {
+              chart: {
+                renderTo: 'panel_1_11',
+                type: 'xy',
+                zoomType: 'xy',
+                alignTicks: false
+              },
+              tooltip: {
+                shared: true,
+              },
+              title: {
+                text: ''
+              },
+              xAxis: {
+                title: {
+                  text: ''
+                },
+                categories: []
+              },
+              yAxis: [{
+                title: {
+                  text: ''
+                },
+                labels: {
+                  format: '{value}%'
+                },
+                max: 100,
+                min: data.minY
+                },{
+                title: {
+                  text: 'Incidencias'
+                },
+                opposite: true,
+                min:0,
+                max: data.maxOppositeY
+              }],
+              series: [],
+              credits: { enabled: false }
+            };
+
+            options.xAxis.categories = data.categories;
+            options.xAxis.title.text = data.xAxisTitle;
+
+            $.each(data.series, function(i,serie) {
+              var data_serie = {
+                name: serie.name,
+                color: serie.color,
+                data: serie.data,
+                type: serie.type,
+                yAxis: serie.yAxis,
+                tooltip: {
+                  valueSuffix: serie.valueSuffix
+                }
+              }
+              options.series.push(data_serie);
+            });
+
+            var chart = new Highcharts.Chart(options);
+
+        }
+    });                  
+
+  });
+{% endblock %}  

@@ -1,0 +1,88 @@
+{% extends '::base_panel.html.twig' %}
+
+{% block panel %}
+
+<div class="row">
+  <div class="col-md-9">
+    <div class="chart-wrapper">
+      <div class="chart-title">
+        <h5 class="cabecera">1) RESULTADOS DE ADMINISTRACIÓN, INFRAESTRUCTURA Y EQUIPOS  en M$</h5>
+      </div>
+      <div class="chart-stage">
+        <div id="panel_3_1"></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            <h5 class="cabecera">2) COSTOS</h5>
+          </div>  
+          <div class="chart-stage">
+            <div id="panel_3_2"></div>
+          </div>
+        </div>    
+      </div>
+      <div class="col-md-6">
+        <div class="chart-wrapper">
+          <div class="chart-title">
+            <h5 class="cabecera">3) GRÁFICA COSTOS ACUMULADOS V/S PROYECCIÓN</h5>
+          </div>  
+          <div class="chart-stage">
+            <div id="panel_3_3"></div>
+          </div>
+        </div>    
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="chart-wrapper">
+      <div class="chart-title">
+        <h5 class="cabecera">1) INDICADORES DE SERVICIO</h5>
+      </div>
+      <div class="chart-stage">
+        <div class="col-md-12">
+
+          <div class="chart-wrapper">
+            <div class="chart-title">
+              % Cumplimiento solicitudes
+            </div>
+            <div class="chart-stage">
+              <div id="panel_3_4"></div>
+            </div>
+          </div>
+
+          <div class="chart-wrapper">
+            <div class="chart-title">
+              ???
+            </div>
+            <div class="chart-stage">
+              <div id="panel_3_5"></div>
+            </div>
+          </div>
+
+          <div class="chart-wrapper">
+            <div class="chart-title">
+              ???
+            </div>
+            <div class="chart-stage">
+              <div id="panel_3_6"></div>
+            </div>    
+          </div>
+
+        </div>
+      </div>        
+    </div>
+  </div>    
+</div>
+{% endblock %}
+
+
+{% block js %}
+  {{ parent() }}
+  $(function () {                
+
+  });
+{% endblock %}  

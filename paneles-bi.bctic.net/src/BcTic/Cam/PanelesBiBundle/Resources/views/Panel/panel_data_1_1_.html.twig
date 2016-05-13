@@ -1,0 +1,111 @@
+{% set suma_resultado_mes = 0 %}
+{% set suma_presupuesto_mes = 0 %}
+
+{% set suma_resultado_acumulado_mes = 0 %}
+{% set suma_presupuesto_acumulado_mes = 0 %}
+
+{% set suma_proyeccion_anual = 0 %}
+{% set suma_presupuesto_anual = 0 %}
+
+<table class="table table-bordered">
+
+  <thead>
+    <tr>
+      <th rowspan="3"></th>
+      <th colspan="4" class="color">GESTIÓN MENSUAL</th>
+      <th class="separador"></th>
+      <th colspan="4" class="color">GESTIÓN ACUMULADA A LA FECHA</th>
+      <th class="separador"></th>
+      <th colspan="4" class="color">GESTIÓN ANUAL</th>
+    </tr>
+    <tr>
+      <th rowspan="2" class="color">Result. mes</th>
+      <th rowspan="2" class="color">Ppto Mes</th>
+      <th colspan="2" class="color">Brechas</th>
+      <th class="separador"></th>
+      <th rowspan="2" class="color">Result. acumul.</th>
+      <th rowspan="2" class="color">Ppto acumulado</th>
+      <th colspan="2" class="color">Brechas</th>
+      <th class="separador"></th>
+      <th rowspan="2" class="color">Proyecc. anual</th>
+      <th rowspan="2" class="color">Ppto anual</th>
+      <th colspan="2" class="color">Brechas</th>
+    </tr>
+    <tr>
+      <th class="color">$</th>
+      <th class="color">(%)</th>
+      <th class="separador"></th>
+      <th class="color">$</th>
+      <th class="color">(%)</th>
+      <th class="separador"></th>
+      <th class="color">$</th>
+      <th class="color">(%)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for key,item in data %}
+
+      {% set suma_resultado_mes = suma_resultado_mes + item.monto %}
+      {% set suma_presupuesto_mes = suma_presupuesto_mes + item.presupuesto %}
+
+      {% set suma_resultado_acumulado_mes = suma_resultado_acumulado_mes + item.monto_acumulado %}
+      {% set suma_presupuesto_acumulado_mes = suma_presupuesto_acumulado_mes + item.presupuesto_acumulado %}
+
+      {% set suma_proyeccion_anual = suma_proyeccion_anual + item.proyectado %}
+      {% set suma_presupuesto_anual = suma_presupuesto_anual + item.presupuesto_anual %}
+
+    <tr>
+
+      <td>{{ key | replace({'FINANZAS_': '','-': ' '})}}</td>
+
+      <td>{{ (item.monto / 1000 ) | number_format(0,',','.') }}</td>
+      <td>{{ (item.presupuesto / 1000 ) | number_format(0,',','.') }}</td>
+      <td>{{ ((item.presupuesto - item.monto ) / 1000) | number_format(0,',','.') }}</td>
+      <td>{% if ( (item.presupuesto) == 0 ) %}
+             -
+           {% else %}
+             {{ ( 100 * ((item.monto - item.presupuesto) / item.presupuesto ) ) | number_format(1,',','.') }}
+           {% endif %}
+      </td>
+
+      <td class="separador"></td>
+
+      <td>{{ (item.monto_acumulado / 1000 ) | number_format(0,',','.') }}</td>
+      <td>{{ (item.presupuesto_acumulado / 1000 ) | number_format(0,',','.') }}</td>
+      <td>{{ ((item.presupuesto_acumulado - item.monto_acumulado ) / 1000) | number_format(0,',','.') }}</td>
+      <td>{% if ( (item.presupuesto_acumulado) == 0 ) %}
+             -
+           {% else %}
+            {{ ( 100 * ((item.monto_acumulado - item.presupuesto_acumulado) / item.presupuesto_acumulado ) ) | number_format(1,',','.') }}
+           {% endif %}
+      </td>
+
+      <td class="separador"></td>
+
+      <td>{{ (item.proyectado / 1000 ) | number_format(0,',','.') }}</td>
+      <td>{{ (item.presupuesto_anual / 1000 ) | number_format(0,',','.') }}</td>
+      <td>{{ ((item.presupuesto_anual - item.proyectado ) / 1000) | number_format(0,',','.') }}</td>
+      <td>{% if ( (item.presupuesto_anual) == 0 ) %}
+             -
+           {% else %}
+             {{ ( 100 * ((item.proyectado - item.presupuesto_anual) / item.presupuesto_anual ) ) | number_format(1,',','.') }}
+           {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <th class="color">Totales</th>
+        <td>{{ ( suma_resultado_mes / 1000 ) | number_format(0,',','.')}}</td>
+        <td>{{ ( suma_presupuesto_mes / 1000 ) | number_format(0,',','.')}}</td>
+        <td colspan="2"></td>
+        <td>{{ ( suma_resultado_acumulado_mes  / 1000 ) | number_format(0,',','.')}}</td>
+        <td>{{ ( suma_presupuesto_acumulado_mes  / 1000 ) | number_format(0,',','.')}}</td>
+        <td colspan="2"></td>
+        <td>{{ ( suma_proyeccion_anual  / 1000 ) | number_format(0,',','.')}}</td>
+        <td>{{ ( suma_presupuesto_anual  / 1000 ) | number_format(0,',','.')}}</td>
+        <td colspan="2"></td>
+      </tr>
+    </tfoot>
+</table>

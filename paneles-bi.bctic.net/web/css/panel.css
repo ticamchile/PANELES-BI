@@ -1,0 +1,31 @@
+h5.cabecera {
+	background-color: #eb8005;
+	padding: 5px;
+	text-align: center;
+	color: #fff;
+}
+
+#content {
+  width: 99%;
+} 
+/*
+#content .row {
+	padding:0px !important;
+} */
+
+#content .row table tr th, #content .row table tr td {
+	font-size:8px;
+	text-align: center !important;
+}
+
+#content .color {
+    background-color: #6095c9;	
+}
+
+#content table tr .separador {
+	display: none;
+}
+
+
+
+

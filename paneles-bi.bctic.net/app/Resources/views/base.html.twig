@@ -1,0 +1,48 @@
+{% extends 'BcTicVictoriaBundle:Default:base.html.twig' %}
+
+{% set copyright = 'CAM LA - PANELES Business Intelligence' %}
+{% set home = 'PANELES BI CAM' %}
+{% set version = 'Revisión 39' %}
+
+{% block menu %}
+
+ 
+              {% if is_granted('ROLE_USER') %}
+
+              <ul class="nav navbar-nav">
+              <li><a href="{{ path('default_index') }}">Ver paneles</a></li>
+              <li class="dropdown hidden-xs">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ "Carga de datos" | trans }}&nbsp;<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ path('archivo_de_carga_index') }}">{{ "Archivos" | trans }}</a></li>
+                  <li><a href="{{ path('archivo_de_carga_new') }}">{{ "Cargar archivo de datos" | trans }}</a></li>
+                </ul>
+              </li>
+              </ul>
+
+              {% endif %}
+               
+              {% if is_granted('ROLE_ADMIN') %}
+
+               <ul class="nav navbar-nav">
+                <li class="dropdown hidden-xs">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ "Auditoría de datos" | trans }}&nbsp;<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ path('indicador_index') }}">{{ "Ver todos" | trans }}</a></li>
+                  <li><a href="{{ path('indicador_filter') }}">{{ "Ver reporte" | trans }}</a></li> 
+                </ul>
+              </ul>
+
+              <ul class="nav navbar-nav">
+              <li class="dropdown hidden-xs">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ "Configuración" | trans }}&nbsp;<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ path('paneles_index') }}">{{ "Paneles" | trans }}</a></li>
+                  <li><a href="{{ path('user_index') }}">{{ "Usuarios" | trans }}</a></li>
+                </ul>
+              </li>
+              </ul>
+              {% endif %}
+
+
+{% endblock %}
